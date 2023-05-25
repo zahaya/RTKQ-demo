@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { useGetStudentsQuery } from "./store/studentApi";
+import StudentList from "./components/StudentList/StudentList";
 
 function App() {
+  // 调用api查询数据
+  // 钩子函数会返回一个对象作为返回值，请求过程中的相关数据都在该对象中存储
+  const {
+    data: stus,
+    isSuccess,
+    isLoading,
+    refetch
+  } = useGetStudentsQuery()
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={() => refetch()}>刷新</button>
+      {isLoading && <p>数据加载中。。。</p>}
+      {isSuccess && <StudentList stus={stus}></StudentList>}
     </div>
   );
 }
